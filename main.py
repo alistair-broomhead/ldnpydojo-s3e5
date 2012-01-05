@@ -1,7 +1,10 @@
+import random
+
 __author__ = 'Alistair Broomhead'
 
 class Board(object):
     def __init__(self, solution=None):
+        self.solution = []
         if solution is None:
             self.generate_solution()
         else:
@@ -10,8 +13,22 @@ class Board(object):
             self.solution = solution
         self.guesses = []
     def generate_solution(self):
-        # TODO - Randomise
-        self.solution = list(range(4))
+        for i in range(4):
+            self.solution.append(random.choice(range(6)))
+        #print self.solution
+        #self.solution = list(range(4))
+    def get_input(self):
+        while True:
+            try:
+                in_ = raw_input("Guess?")
+                in_ = in_.split()
+                in_ = [int(x) for x in in_]
+                assert len(in_) == 4
+                for peg in in_:
+                    assert peg in range(6)
+                return self.guess(in_)
+            except (TypeError, ValueError, AssertionError):
+                pass
     def guess(self, solution):
         for peg in solution: assert peg in range(6)
         self.guesses.append(solution)
@@ -37,12 +54,14 @@ class Board(object):
         if len(self.guesses) >= 12: return False
         return returnValue
     def solved(self):
+        if not self.guesses: return False
         return self.guesses[-1] == self.solution
     def __str__(self):
         str_out = ''
         if (len(self.guesses) >= 12
             or
-            self.guesses[-1] == self.solution):
+            (self.guesses and
+             self.guesses[-1] == self.solution)):
             str_out += ' '.join(self.solution)
         else:
             str_out += ' '.join(['X']*4)
@@ -53,12 +72,10 @@ class Board(object):
 
 
 BOARD = Board()
-in_ = [int(x) for x in raw_input("Guess?").split()]
-r = BOARD.guess(in_)
+r = {}
 while r not in [True, False]:
     print BOARD
-    in_ = [int(x) for x in raw_input("Guess?").split()]
-    r = BOARD.guess(in_)
+    r = BOARD.get_input()
 if r:
     print 'You win'
 else:
