@@ -1,6 +1,6 @@
 import random
 
-__author__ = 'Alistair Broomhead'
+__author__ = 'Alistair Broomhead, Mohammed Abdulrazeg, Carles Pina, John C'
 
 class Board(object):
     def __init__(self, solution=None):
@@ -13,10 +13,7 @@ class Board(object):
             self.solution = solution
         self.guesses = []
     def generate_solution(self):
-        for i in range(4):
-            self.solution.append(random.choice(range(6)))
-        #print self.solution
-        #self.solution = list(range(4))
+        [self.solution.append(random.choice(range(6))) for i in range(4)]
     def get_input(self):
         while True:
             try:
