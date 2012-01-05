@@ -11,6 +11,7 @@ class Board(object):
             assert len(solution) == 4
             for peg in solution: assert peg in range(6)
             self.solution = solution
+       # print self.solution
         self.guesses = []
     def generate_solution(self):
         [self.solution.append(random.choice(range(6))) for i in range(4)]
@@ -47,6 +48,7 @@ class Board(object):
         for peg in unmatchedguess:
             if peg in unmatchedreal:
                 returnValue['there'] += 1
+                unmatchedreal.remove(peg)
                 self.guesses[-1].append('?')
         if len(self.guesses) >= 12: return False
         return returnValue
@@ -59,10 +61,10 @@ class Board(object):
             or
             (self.guesses and
              self.guesses[-1] == self.solution)):
-            str_out += ' '.join(self.solution)
+            str_out += ' '.join([ `x` for x in self.solution])
         else:
             str_out += ' '.join(['X']*4)
-        str_out += '\n'
+        str_out += '\n' + '-'*19 +'\n'
         for guess in self.guesses:
             str_out += ' '.join([`x` for x in guess]) + "\n"
         return str_out
